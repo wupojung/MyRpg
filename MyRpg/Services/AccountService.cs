@@ -48,4 +48,43 @@ public class AccountService
 
         return result;
     }
+
+    public Account Update(Account account)
+    {
+        Account result = null;
+
+        var fromDb = from db in database
+            where db.Id == account.Id
+            select db;
+        
+        if (fromDb.Any())
+        {
+            result = fromDb.FirstOrDefault();
+            //result.Username = account.Username; //理論上不可以修改
+            result.Password = account.Password;
+            result.Nickname = account.Nickname;
+        }
+
+        return result;
+    }
+    
+    
+    public bool Delete(int id)
+    {
+        bool result = false;
+
+        var fromDb = from db in database
+            where db.Id == id
+            select db;
+        
+        if (fromDb.Any())
+        {
+            var temp = fromDb.FirstOrDefault();
+            database.Remove(temp);
+            result = true;
+
+        }
+
+        return result;
+    }
 }

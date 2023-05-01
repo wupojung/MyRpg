@@ -18,15 +18,37 @@ namespace MyRpg.Controllers
         {
             _service = new AccountService();
         }
-        
+
         [HttpPost]
         public Account Login(LoginModel account)
         {
-            Account result = null; 
+            Account result = null;
             if (_service.Verify(account.Username, account.Password))
             {
                 result = _service.GetByUserName(account.Username);
             }
+
+            return result;
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public Account Modify(int id, Account account)
+        {
+            Account result = null;
+            account.Id = id; //update data
+            result = _service.Update(account);
+            return result;
+        }
+        
+        
+        [HttpDelete]
+        [Route("{id:int}")]
+        public bool Delete(int id)
+        {
+           bool result = false;
+            
+            result = _service.Delete(id);
             return result;
         }
     }
